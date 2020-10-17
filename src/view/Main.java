@@ -1,9 +1,7 @@
 package view;
 
+import control.Generate;
 import control.Reader;
-
-import java.io.IOError;
-import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -40,6 +38,8 @@ public class Main {
                     case 3:
 
                     case 4:
+                        Generate generate = new Generate();
+                        //generate.builderFile();
                         returnPrincipal();
                         break;
                     case 0:

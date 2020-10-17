@@ -2,39 +2,34 @@ package model;
 
 public class Node {
 
-    private int line;
-    private int column;
-    private Node right;
-    private Node below;
     private int value;
-
-    public Node(int linha, int coluna, int valor, Node right, Node below) {
-
-        this.line = linha;
-        this.column = coluna;
-        this.value = valor;
-        this.right = right;
-        this.below = below;
-
-    }
+    private Node right;
+    private Node down;
+    private int row;
+    private int column;
 
     public Node() {
+
     }
 
-    public int getLine() {
-        return line;
+    public Node(int value) {
+        this.value = value;
     }
 
-    public void setLine(int line) {
-        this.line = line;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
+    public Node(int value, Node right, Node down, int row, int column) {
+        this.value = value;
+        this.right = right;
+        this.down = down;
+        this.row = row;
         this.column = column;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 
     public Node getRight() {
@@ -45,20 +40,28 @@ public class Node {
         this.right = right;
     }
 
-    public Node getBelow() {
-        return below;
+    public Node getDown() {
+        return down;
     }
 
-    public void setBelow(Node below) {
-        this.below = below;
+    public void setDown(Node down) {
+        this.down = down;
     }
 
-    public int getValue() {
-        return value;
+    public int getRow() {
+        return row;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void setColumn(int column) {
+        this.column = column;
     }
 
 }
