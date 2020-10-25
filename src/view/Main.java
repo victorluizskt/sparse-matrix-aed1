@@ -28,61 +28,59 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
-     private static Scanner input = new Scanner(System.in);
-     private static Scanner read;
-     private static Matrix<Integer> matrixImage;
-     private static Integer maxValue;
-     private static int choice = 10;
-     private static String nameArchive;
+    private static final Scanner input = new Scanner(System.in);
+    private static Matrix<Integer> matrixImage;
+    private static Integer maxValue;
+    private static int choice = 10;
+
     public static void main(String[] args) {
         Initializable();
     }
 
     public static void Initializable(){
         try {
-            do {
-                System.out.println("Opções: ");
+            while(choice != 2) {
                 System.out.println("Escolha um arquivo na pasta raiz do projeto para leitura.");
-                System.out.println("[1] - Finalizar programa.");
-                System.out.println("[2] - Ler arquivo.");
+                System.out.println("\t\t\t[1]  Ler arquivo.");
+                System.out.println("\t\t\t[2]  Finalizar programa.");
                 choice = input.nextInt();
-                
                 switch (choice){
                     case 1:
-                        System.out.println("Finalizando aplicação.");
+                        readArchive();
                         break;
                     case 2:
-                        readArchive();
+                        System.out.println("Finalizando aplicação.");
                         break;
                     default:
                         System.out.println("Opção invalida.");
                 }
-            } while(choice != 1);
+            }
         } catch(NumberFormatException e){
             throw new NumberFormatException("Valor inválido.");
         }
     }
-    
+
     // Metódo para receber o nome do arquivo.
     private static void readArchive() {
-        System.out.println("Informe o nome do arquivo:");
-        nameArchive = input.next();
+        System.out.println("\nInforme o nome do arquivo:");
+        String nameArchive = input.next();
         nameArchive = nameArchive + ".pgm";
         loadArchive(nameArchive);
         menuImage();
     }
 
+    /* Metódo com todas as operações para o usuário. */
     private static void menuImage() {
         boolean quit = true;
         try {
             while (quit) {
-                System.out.println("Selecione uma opção:");
-                System.out.println("[1] Exibir imagem na saída.");
-                System.out.println("[2] Inserir borda de 3px na imagem.");
-                System.out.println("[3] Inverter as cores da imagem.");
-                System.out.println("[4] Rotacionar a imagem 90°.");
-                System.out.println("[5] Salve image.");
-                System.out.println("[6] Sair do programa.");
+                System.out.println("\nSelecione uma opção:");
+                System.out.println("\t\t\t[1] Exibir imagem na saída.");
+                System.out.println("\t\t\t[2] Inserir borda na imagem.");
+                System.out.println("\t\t\t[3] Inverter as cores da imagem.");
+                System.out.println("\t\t\t[4] Rotacionar a imagem 90°.");
+                System.out.println("\t\t\t[5] Salve image.");
+                System.out.println("\t\t\t[6] Sair do programa.");
                 System.out.print("Option: ");
                 choice = input.nextInt();
                 switch (choice) {
@@ -90,7 +88,13 @@ public class Main {
                         printImage();
                         break;
                     case 2:
-                        insertEdge(3);
+                        System.out.println("Quantidade de pixel desejado: ");
+                        try {
+                            int pixel = input.nextInt();
+                            insertEdge(pixel);
+                        } catch(InputMismatchException e){
+                            System.out.println("Valor invalido, tente novamente.");
+                        }
                         break;
                     case 3:
                         invertColor();
@@ -113,14 +117,16 @@ public class Main {
         }
     }
 
+    /* Metódo para impressão da imagem no console */
     private static void printImage() {
         System.out.println("Imagem: \n\n " + matrixImage);
     }
 
+    /* Carregamento do arquivo */
     private static void loadArchive(String nomeArquivo) {
         try {
             File arq = new File(nomeArquivo);
-            read = new Scanner(arq);
+            Scanner read = new Scanner(arq);
 
             if(arq.exists()) {
                 String type = read.next();
@@ -130,8 +136,9 @@ public class Main {
                 int nColumn = read.nextInt();
                 int nLine = read.nextInt();
                 maxValue = read.nextInt();
-                matrixImage = new Matrix<Integer>(nLine, nColumn);
+                matrixImage = new Matrix<>(nLine, nColumn);
 
+                // Salvando o arquivo na matriz.
                 for (int line = 0; line < nLine; line++) {
                     for (int column = 0; column < nColumn; column++) {
                         int bit = read.nextShort();
@@ -141,6 +148,7 @@ public class Main {
                 }
             }
             read.close();
+            System.out.println("Arquivo lido com sucesso.\n");
         } catch (FileNotFoundException e){
             System.err.println("Arquivo não encontrado.");
             Initializable();
@@ -153,10 +161,11 @@ public class Main {
         }
     }
 
+    /* Função que executa a inserção de borda na imagem. */
     private static void insertEdge(int qntPixel){
         try{
             matrixImage.insertEdge(qntPixel, 255);
-            System.out.println("Borda inserida com sucesso.");
+            System.out.println("Borda inserida com sucesso.\n");
         } catch (MatrixException e){
             System.out.println("Erro ao inserir borda: " + e.getMessage());
         } catch (Exception e){
@@ -164,10 +173,11 @@ public class Main {
         }
     }
 
+    /* Função que executa a inversão de cores na imagem */
     private static void invertColor() {
         try {
             matrixImage.invertColor(maxValue);
-            System.out.println("Cores invertidas com sucesso.");
+            System.out.println("Cores invertidas com sucesso.\n");
         } catch(ArrayIndexOutOfBoundsException | NullPointerException | MatrixException e){
             System.out.println("Erro ao inverter as cores da imagem: " + e.getMessage());
         } catch(Exception e){
@@ -175,15 +185,17 @@ public class Main {
         }
     }
 
+    /* Função que executa a rotação de 90° na imagem */
     private static void rotateImage(){
         try {
             matrixImage = matrixImage.rotateImage();
-            System.out.println("Imagem rotacionada com sucesso.");
+            System.out.println("Imagem rotacionada com sucesso.\n");
         } catch(Exception e){
             System.out.println("Erro ao rotacionar imagem.");
         }
     }
 
+    /* Função que executa o salvamento da imagem */
     private static void saveArchive(){
         BufferedWriter arq;
         String nameAch = generateName();
@@ -193,17 +205,18 @@ public class Main {
             arq.write(matrixImg);
             arq.close();
             java.awt.Desktop.getDesktop().open(new File(nameAch));
-            System.out.println("Arquivo criado na raiz do projeto.");
+            System.out.println("Arquivo criado na raiz do projeto.\n");
         } catch(IOException e){
             System.out.println("Erro ao abrir ou criar arquivo.");
         }
     }
 
+    /* Função para gerar data para a imagem */
     private static String generateName() {
         Date date = new Date();
         Calendar today = Calendar.getInstance();
         today.setTime(date);
-        return "imagem-editada" + "_" + today.get(Calendar.DAY_OF_MONTH) + "-" +
+        return "nova-imagem" + "_" + today.get(Calendar.DAY_OF_MONTH) + "-" +
                 today.get(Calendar.MONTH) + "-" + today.get(Calendar.YEAR) + "_" + today.get(Calendar.HOUR) +
                 "h" + today.get(Calendar.MINUTE) + "m" + today.get(Calendar.SECOND) +
                 "s" + ".pgm";
