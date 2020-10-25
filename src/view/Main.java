@@ -2,8 +2,7 @@ package view;
 
 /*
  *
- * @param <T>
- * @brief Classe Matrix
+ * @brief Classe Main
  * @author Victor Luiz Gonçalves
  * @date   24/10/2019
  * @since  24/10/2019
