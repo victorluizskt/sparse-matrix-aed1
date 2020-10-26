@@ -9,13 +9,15 @@ package view;
  *
  */
 
+   /*
+        O programa lê apenas imagens que estão na riz do projeto Trabalho1 é um exemplo,
+    decidi efetuar essa ideia para não haver dificuldades ao tentar efetuar a leitura do mesmo,
+    e não precisa digitar a extensão pgm, apenas o nome do arquivo.
 
- /*
-    Classe principal, interface com o user.
-  */
+   */
+
 import model.Matrix;
 import model.exception.MatrixException;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,12 +28,14 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/* Criação de variaveis estaticas para utilização ao decorrer de todo código */
 public class Main {
     private static final Scanner input = new Scanner(System.in);
     private static Matrix<Integer> matrixImage;
     private static Integer maxValue;
     private static int choice = 10;
 
+    /* Chama o metodo de inicialização para começar a iteração com o usuário. */
     public static void main(String[] args) {
         Initializable();
     }
@@ -39,29 +43,31 @@ public class Main {
     public static void Initializable(){
         try {
             while(choice != 2) {
-                System.out.println("Escolha um arquivo na pasta raiz do projeto para leitura.");
+                System.out.println("\tEscolha um arquivo na pasta raiz do projeto para leitura.");
                 System.out.println("\t\t\t[1]  Ler arquivo.");
                 System.out.println("\t\t\t[2]  Finalizar programa.");
+                System.out.print("\t\t =>\t");
                 choice = input.nextInt();
                 switch (choice){
                     case 1:
                         readArchive();
                         break;
                     case 2:
-                        System.out.println("Finalizando aplicação.");
+                        System.out.println("\t\tFinalizando aplicação.");
                         break;
                     default:
                         System.out.println("Opção invalida.");
                 }
             }
-        } catch(NumberFormatException e){
-            throw new NumberFormatException("Valor inválido.");
+        } catch(InputMismatchException e){
+            throw new InputMismatchException("Valor inválido.");
         }
     }
 
     // Metódo para receber o nome do arquivo.
     private static void readArchive() {
-        System.out.println("\nInforme o nome do arquivo:");
+        System.out.println("\n\tInforme o nome do arquivo:");
+        System.out.print("\t\t =>\t");
         String nameArchive = input.next();
         nameArchive = nameArchive + ".pgm";
         loadArchive(nameArchive);
@@ -73,22 +79,23 @@ public class Main {
         boolean quit = true;
         try {
             while (quit) {
-                System.out.println("\nSelecione uma opção:");
+                System.out.println("\n\tSelecione uma opção:");
                 System.out.println("\t\t\t[1] Exibir imagem na saída.");
                 System.out.println("\t\t\t[2] Inserir borda na imagem.");
                 System.out.println("\t\t\t[3] Inverter as cores da imagem.");
                 System.out.println("\t\t\t[4] Rotacionar a imagem 90°.");
-                System.out.println("\t\t\t[5] Salve image.");
+                System.out.println("\t\t\t[5] Salvar imagem.");
                 System.out.println("\t\t\t[6] Sair do programa.");
-                System.out.print("Option: ");
+                System.out.print("\tOption => ");
                 choice = input.nextInt();
                 switch (choice) {
                     case 1:
                         printImage();
                         break;
                     case 2:
-                        System.out.println("Quantidade de pixel desejado: ");
+                        System.out.println("\tQuantidade de pixel desejado: ");
                         try {
+                            System.out.print("\t\t =>\t");
                             int pixel = input.nextInt();
                             insertEdge(pixel);
                         } catch(InputMismatchException e){
@@ -147,7 +154,7 @@ public class Main {
                 }
             }
             read.close();
-            System.out.println("Arquivo lido com sucesso.\n");
+            System.out.println("\tArquivo lido com sucesso.");
         } catch (FileNotFoundException e){
             System.err.println("Arquivo não encontrado.");
             Initializable();
@@ -163,8 +170,8 @@ public class Main {
     /* Função que executa a inserção de borda na imagem. */
     private static void insertEdge(int qntPixel){
         try{
-            matrixImage.insertEdge(qntPixel, 255);
-            System.out.println("Borda inserida com sucesso.\n");
+            matrixImage.insertEdge(qntPixel, 2515);
+            System.out.println("\tBorda inserida com sucesso.");
         } catch (MatrixException e){
             System.out.println("Erro ao inserir borda: " + e.getMessage());
         } catch (Exception e){
@@ -176,7 +183,7 @@ public class Main {
     private static void invertColor() {
         try {
             matrixImage.invertColor(maxValue);
-            System.out.println("Cores invertidas com sucesso.\n");
+            System.out.println("\tCores invertidas com sucesso.");
         } catch(ArrayIndexOutOfBoundsException | NullPointerException | MatrixException e){
             System.out.println("Erro ao inverter as cores da imagem: " + e.getMessage());
         } catch(Exception e){
@@ -188,7 +195,7 @@ public class Main {
     private static void rotateImage(){
         try {
             matrixImage = matrixImage.rotateImage();
-            System.out.println("Imagem rotacionada com sucesso.\n");
+            System.out.println("\tImagem rotacionada com sucesso.");
         } catch(Exception e){
             System.out.println("Erro ao rotacionar imagem.");
         }
@@ -204,7 +211,7 @@ public class Main {
             arq.write(matrixImg);
             arq.close();
             java.awt.Desktop.getDesktop().open(new File(nameAch));
-            System.out.println("Arquivo criado na raiz do projeto.\n");
+            System.out.println("\tArquivo criado na raiz do projeto.");
         } catch(IOException e){
             System.out.println("Erro ao abrir ou criar arquivo.");
         }
